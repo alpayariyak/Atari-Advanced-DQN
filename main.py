@@ -1,9 +1,4 @@
-"""
 
-### NOTICE ###
-You DO NOT need to upload this file
-
-"""
 import argparse
 from test import test
 from environment import Environment
