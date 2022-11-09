@@ -4,35 +4,6 @@ import numpy as np
 import torch
 from operator import itemgetter
 
-class PrioritizedExperienceBuffer:
-    # How To Speed Up Training With Prioritized Experience Replay - https://www.youtube.com/watch?v=MqZmwQoOXw4
-    def __init__(self, maxlen):
-        self.experience_buffer = deque(maxlen=maxlen)  # (s, a, r, s', is_terminal)
-        self.priorities = deque(maxlen=maxlen)  # (index, p_i, P_i, w_i)
-
-    def push(self):
-        """ You can add additional arguments as you need.
-        Push new data to buffer and remove the old one if the buffer is full.
-
-        Hints:
-        -----
-            you can consider deque(maxlen = 10000) list
-        """
-        ###########################
-        # YOUR IMPLEMENTATION HERE #
-
-        ###########################
-
-    def select_experience(self):
-        """ You can add additional arguments as you need.
-        Select batch from buffer.
-        """
-        ###########################
-        # YOUR IMPLEMENTATION HERE #
-
-        ###########################
-        return
-
 
 class ExperienceBuffer:
     def __init__(self, maxlen, minibatch_size, device):
