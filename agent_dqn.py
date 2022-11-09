@@ -80,7 +80,7 @@ class Agent_DQN(Agent):
 
         if args.checkpoint_name:
             print(args.checkpoint_name)
-            checkpoint = torch.load(f'{args.checkpoint_name}.pt')
+            checkpoint = torch.load(f'checkpoints/{args.checkpoint_name}.pt', map_location=torch.device('cpu') )
             self.Q_net.load_state_dict(checkpoint['model_state_dict'])
 
             self.optimizer.load_state_dict(checkpoint['optimizer_state_dict'])
@@ -207,7 +207,7 @@ class Agent_DQN(Agent):
                 torch.save({'episode': episode,
                 'model_state_dict': self.Q_net.state_dict(),
                 'optimizer_state_dict': self.optimizer.state_dict(),
-                'loss': self.loss_list[-1]}, f'{self.decay_end}.pt')
+                'loss': self.loss_list[-1]}, f'checkpoints/{self.decay_end}.pt')
             self.update_epsilon()
         ###########################
 
