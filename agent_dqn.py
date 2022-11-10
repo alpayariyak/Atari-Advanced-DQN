@@ -42,6 +42,7 @@ class Agent_DQN(Agent):
         self.buffer_size = args.buffer_size
         self.minibatch_size = args.batch_size
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+        print(self.device)
         self.buffer = ExperienceBuffer(self.buffer_size, self.minibatch_size, self.device)
         self.n_episodes = args.n_episodes
         self.gamma = args.gamma
@@ -137,7 +138,7 @@ class Agent_DQN(Agent):
 
     def optimize(self):
         samples = self.buffer.sample_experiences()
-        states, actions, rewards, next_states, terminals = [list_to_tensor(sample) for sample in samples]
+        states, actions, rewards, next_states, terminals = [list_to_tensor(sample).to(self.device) for sample in samples]
         actions, rewards, terminals = actions.unsqueeze(1), rewards.unsqueeze(1), terminals.unsqueeze(1)
         Q_values = self.Q_network(states).gather(1, actions)
         max_Q_target_next_states = self.Q_target_network(next_states).max(1)[0].view(self.minibatch_size, 1)
