@@ -68,10 +68,10 @@ class Agent_DQN(Agent):
         self.gamma = args.gamma
         self.loss = nn.SmoothL1Loss()
         self.optimizer = optim.Adam(self.Q_net.parameters(), lr=self.learning_rate)
-        # self.grad_clip =(-args.grad_clip, args.grad_clip)
+        self.grad_clip =args.grad_clip
 
         self.optimize_interval = 4 if not args.optimize_interval else args.optimize_interval
-        self.target_update_interval = 700 if not args.target_update_interval else args.target_update_interval # (self.n_episodes * 0.01)
+        self.target_update_interval = 5000 if not args.target_update_interval else args.target_update_interval # (self.n_episodes * 0.01)
         self.evaluate_interval = 10000 if not args.evaluate_interval else args.evaluate_interval# (self.n_episodes * 0.1)
 
         self.episode_rewards = []
@@ -154,8 +154,7 @@ class Agent_DQN(Agent):
         self.optimizer.zero_grad()
         loss.backward()
         # clip gradients to (-1,1)
-        for param in self.Q_net.parameters():
-            param.grad.data.clamp_(-self.grad_clip, self.grad_clip)
+        torch.nn.utils.clip_grad_norm_(self.Q_net.parameters(), 1.0)
         self.optimizer.step()
 
     def to_tensor(self, value):

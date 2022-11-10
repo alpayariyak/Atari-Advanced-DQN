@@ -10,7 +10,7 @@ def add_arguments(parser):
     parser.add_argument('--batch_size', type=int, default=32, help='batch size for training')
     parser.add_argument('--learning_rate', type=float, default=1e-4, help='learning rate for training')
     parser.add_argument('--epsilon_start', type=float, default=1, help='Initial Epsilon Value')
-    parser.add_argument('--epsilon_end', type=float, default=0.1, help='Final Epsilon Value')
+    parser.add_argument('--epsilon_end', type=float, default=0.025, help='Final Epsilon Value')
     parser.add_argument('--buffer_size', type=int, default=1000, help='Buffer Size')
     parser.add_argument('--decay_start', type=int, default=False, help='When to start decaying epsilon')
     parser.add_argument('--decay_end', type=int, default=False, help='When to start decaying epsilon')
