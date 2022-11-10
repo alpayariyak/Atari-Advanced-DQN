@@ -68,10 +68,10 @@ class Agent_DQN(Agent):
         self.gamma = args.gamma
         self.loss = nn.SmoothL1Loss()
         self.optimizer = optim.Adam(self.Q_net.parameters(), lr=self.learning_rate)
-        # self.grad_clip =(-args.grad_clip, args.grad_clip)
+        self.grad_clip =args.grad_clip
 
         self.optimize_interval = 4 if not args.optimize_interval else args.optimize_interval
-        self.target_update_interval = 700 if not args.target_update_interval else args.target_update_interval # (self.n_episodes * 0.01)
+        self.target_update_interval = 5000 if not args.target_update_interval else args.target_update_interval # (self.n_episodes * 0.01)
         self.evaluate_interval = 10000 if not args.evaluate_interval else args.evaluate_interval# (self.n_episodes * 0.1)
 
         self.episode_rewards = []
@@ -79,13 +79,14 @@ class Agent_DQN(Agent):
         self.action_counter = {0:0, 1:0, 2:0, 3:0}
 
         if args.checkpoint_name:
-            print(args.checkpoint_name)
-            checkpoint = torch.load(f'{args.checkpoint_name}.pt')
-            self.Q_net.load_state_dict(checkpoint['model_state_dict'])
+            # print(args.checkpoint_name)
+            # checkpoint = torch.load(f'checkpoints/{args.checkpoint_name}.pt')
+            # self.Q_net.load_state_dict(checkpoint['model_state_dict'])
 
-            self.optimizer.load_state_dict(checkpoint['optimizer_state_dict'])
-            self.update_target()
-            self.epsilon = 0.1
+            # self.optimizer.load_state_dict(checkpoint['optimizer_state_dict'])
+            # self.update_target()
+            pass
+            # self.epsilon = 0.1
 
         if args.test_dqn:
             # you can load your model here
@@ -132,12 +133,9 @@ class Agent_DQN(Agent):
         
         if random.random() < 1 - epsilon or test:
             with torch.no_grad():
-                if test:
-                    observation = torch.from_numpy(observation).to(self.device)
                 action = self.Q_net(observation.unsqueeze(0)).argmax().item()
                 self.action_counter[action] += 1
         else:
-            print(1)
             action = self.env.action_space.sample()
         ###########################
         return action
@@ -149,13 +147,12 @@ class Agent_DQN(Agent):
         next_states_max_Q_target = self.Q_target_net(next_states).max(1)[0]
         Q_target_values = rewards + self.gamma * next_states_max_Q_target * (1 - terminals.long())
 
-        loss = self.loss(Q_target_values.unsqueeze(1).detach(), Q_values)
+        loss = self.loss(Q_values, Q_target_values.unsqueeze(1).detach())
         self.loss_list.append(loss.item())
         self.optimizer.zero_grad()
         loss.backward()
         # clip gradients to (-1,1)
-        for param in self.Q_net.parameters():
-            param.grad.data.clamp_(-self.grad_clip, self.grad_clip)
+        torch.nn.utils.clip_grad_norm_(self.Q_net.parameters(), 1.0)
         self.optimizer.step()
 
     def to_tensor(self, value):
@@ -170,7 +167,7 @@ class Agent_DQN(Agent):
             action = self.make_action(state, test)
             new_state, reward, terminated, truncated, _ = self.env.step(action)
             new_state = self.to_tensor(new_state)
-            if not eval_mode:
+            if not eval_mode and not test:
                 self.buffer.push(state, action, reward, new_state, terminated)
             state = new_state
             episode_reward += reward
@@ -207,7 +204,7 @@ class Agent_DQN(Agent):
                 torch.save({'episode': episode,
                 'model_state_dict': self.Q_net.state_dict(),
                 'optimizer_state_dict': self.optimizer.state_dict(),
-                'loss': self.loss_list[-1]}, f'{self.decay_end}.pt')
+                'loss': self.loss_list[-1]}, f'checkpoints/{self.decay_end}.pt')
             self.update_epsilon()
         ###########################
 

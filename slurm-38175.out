@@ -1,0 +1,6 @@
+Traceback (most recent call last):
+  File "/home/aariyak/Atari-Advanced-DQN/main.py", line 8, in <module>
+    from test import test
+  File "/home/aariyak/Atari-Advanced-DQN/test.py", line 9, in <module>
+    import numpy as np
+ModuleNotFoundError: No module named 'numpy'
