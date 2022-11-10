@@ -15168,3 +15168,23 @@ Epsilon: 0.025  Last Loss: 0.007725991308689117
 {0: 135, 1: 335, 2: 133, 3: 100}
 Ep length: 140.6
 
+Episode: 380000  Reward: 5.8
+Epsilon: 0.025  Last Loss: 0.005675765685737133
+{0: 352, 1: 168, 2: 236, 3: 243}
+Ep length: 199.8
+
+Episode: 390000  Reward: 5.2
+Epsilon: 0.025  Last Loss: 0.005478067323565483
+{0: 101, 1: 293, 2: 274, 3: 365}
+Ep length: 206.6
+
+Episode: 400000  Reward: 4.4
+Epsilon: 0.025  Last Loss: 0.005879404488950968
+{0: 96, 1: 612, 2: 50, 3: 66}
+Ep length: 164.8
+
+Episode: 410000  Reward: 6.8
+Epsilon: 0.025  Last Loss: 0.0049744294956326485
+{0: 240, 1: 337, 2: 464, 3: 344}
+Ep length: 277.0
+

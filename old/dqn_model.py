@@ -4,6 +4,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 import torch
 
+
 class DQN(nn.Module):
     """Initialize a deep Q-learning network
 
@@ -15,7 +16,7 @@ class DQN(nn.Module):
     This is just a hint. You can build your own structure.
     """
 
-    def __init__(self, device, initialize_weights = False, in_channels=4, num_actions=4):
+    def __init__(self, device, in_channels=4, num_actions=4, ):
         """
         Parameters:
         -----------
@@ -29,17 +30,14 @@ class DQN(nn.Module):
         """
         super(DQN, self).__init__()
         ###########################
-        # YOUR IMPLEMENTATION HERE #
         self.device = device
-        self.conv1 = nn.Conv2d(in_channels, 32, kernel_size=8, stride=4, bias=False)
-        self.conv2 = nn.Conv2d(32, 64, kernel_size=4, stride=2, bias=False)
-        self.conv3 = nn.Conv2d(64, 64, kernel_size=3, stride=1, bias=False)
-        self.fc1 = nn.Linear(64 * 7 * 7, 512)
+        self.conv1 = nn.Conv2d(in_channels, 32, kernel_size=8, stride=4)
+        self.conv2 = nn.Conv2d(32, 64, kernel_size=4, stride=2)
+        self.conv3 = nn.Conv2d(64, 64, kernel_size=3, stride=1)
+        self.fc1 = nn.Linear(64*7*7, 512)
         self.fc2 = nn.Linear(512, num_actions)
 
-        if initialize_weights:
-            self.initialize_weights()
-
+        self.initialize_weights()
         self.to(self.device)
 
     def forward(self, x):
@@ -49,9 +47,8 @@ class DQN(nn.Module):
         well as arbitrary operators on Tensors.
         """
         ###########################
-        # YOUR IMPLEMENTATION HERE #
         # Using the original Deepmind architecture
-        x = x.permute(0, 3, 1, 2).float().to(self.device) / 255.0  # Normalization
+        x = x.permute(0, 3, 1, 2).float().div(255)  # Normalization
         # CNN
         x = F.relu(self.conv1(x))
         x = F.relu(self.conv2(x))
@@ -69,7 +66,6 @@ class DQN(nn.Module):
                 nn.init.kaiming_normal_(m.weight, mode='fan_out', nonlinearity='relu')
                 if m.bias is not None:
                     nn.init.constant_(m.bias, 0.0)
-
             elif isinstance(m, nn.Linear):
                 nn.init.kaiming_normal_(m.weight, mode='fan_out', nonlinearity='relu')
                 nn.init.constant_(m.bias, 0.0)

@@ -26,6 +26,7 @@ def parse():
 
 def run(args):
     start_time = time.time()
+
     if args.train_dqn:
         env_name = args.env_name or 'BreakoutNoFrameskip-v4'
         env = Environment(env_name, args, atari_wrapper=True, test=False)
