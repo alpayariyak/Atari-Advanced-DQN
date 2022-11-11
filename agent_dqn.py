@@ -67,6 +67,8 @@ class Agent_DQN(Agent):
         self.target_update_interval = args.target_update_interval  # (self.n_episodes * 0.01)
         self.evaluate_interval = args.evaluate_interval  # (self.n_episodes * 0.1)
 
+        self.clip_grad = args.clip_grad
+
         self.loss_list = []
         self.rewards_list = []
         self.action_counter = {0: 0, 1: 0, 2: 0, 3: 0}
@@ -147,7 +149,8 @@ class Agent_DQN(Agent):
         self.loss_list.append(loss.item())
         self.optimizer.zero_grad()
         loss.backward()
-        # torch.nn.utils.clip_grad_norm_(self.Q_network.parameters(), 1.0)
+        if self.clip_grad:
+            torch.nn.utils.clip_grad_norm_(self.Q_network.parameters(), 1.0)
         self.optimizer.step()
 
     def train(self):
@@ -173,6 +176,12 @@ class Agent_DQN(Agent):
                 avg_last_30_ep_rewards = 0
                 self.rewards_list.append(avg_last_30_ep_rewards)
 
+            if episode % 100000 == 0:
+                torch.save(self.Q_network.state_dict(), 'checkpoints/test5')
+            if episode % 500000 == 0:
+                with open("test5loss.txt", "w") as output:
+                    output.write(str(self.loss_list))
+                    
             self.update_epsilon()
 
     def evaluate(self, eval_episodes=100):
