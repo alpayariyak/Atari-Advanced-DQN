@@ -4,3 +4,4 @@ A.L.E: Arcade Learning Environment (version 0.7.5+db37282)
   deprecation(
 /home/aariyak/miniconda3/envs/DS595RL/lib/python3.9/site-packages/gym/utils/passive_env_checker.py:227: DeprecationWarning: [33mWARN: Core environment is written in old step API which returns one bool instead of two. It is recommended to rewrite the environment with new step API. [0m
   logger.deprecation(
+slurmstepd: error: *** JOB 40247 ON gpu-4-04 CANCELLED AT 2022-11-11T11:37:19 ***
