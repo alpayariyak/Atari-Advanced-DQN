@@ -76,6 +76,8 @@ class Agent_DQN(Agent):
         if args.test_dqn:
             # you can load your model here
             print('loading trained model')
+            self.Q_network.load_state_dict(torch.load('checkpoints/test5.pt'))
+            self.Q_network.eval()
             ###########################
             # YOUR IMPLEMENTATION HERE #
 
@@ -145,6 +147,7 @@ class Agent_DQN(Agent):
         Q_values = self.Q_network(states).gather(1, actions)
         max_Q_target_next_states = self.Q_target_network(next_states).max(1)[0].view(self.minibatch_size, 1)
         Q_target_values = rewards + self.gamma * max_Q_target_next_states * (1 - terminals.long())
+        print(Q_target_values.shape, print(Q_values.shape))
         loss = self.loss(Q_values, Q_target_values.detach())
         self.loss_list.append(loss.item())
         self.optimizer.zero_grad()
@@ -181,7 +184,7 @@ class Agent_DQN(Agent):
             if episode % 500000 == 0:
                 with open("test5loss.txt", "w") as output:
                     output.write(str(self.loss_list))
-                    
+
             self.update_epsilon()
 
     def evaluate(self, eval_episodes=100):
