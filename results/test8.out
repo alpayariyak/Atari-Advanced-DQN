@@ -1,0 +1,6 @@
+cuda
+Episode: 0  Reward: 6.84
+Epsilon: 0.01  Last 5 Losses: [0.011497986713679076]
+{0: 10068, 1: 4034, 2: 3759, 3: 4710}
+Ep length: 225.71
+

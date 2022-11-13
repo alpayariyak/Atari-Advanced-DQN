@@ -5,4 +5,4 @@
 #SBATCH -t 20:00:00
 #SBATCH --mem 8G
 
-python -u main.py --train_dqn --n_episodes=5000000 --decay_end=80000 --epsilon_end=0.1 --optimize_interval=4 --target_update_interval=5000 --evaluate_interval=10000 --buffer_size=400000 --initialize_weights=False --clip_grad=True > test5_short.out
+python -u main.py --train_dqn --test_n=7 --n_episodes=5000000 --buffer_size=100000 --load_checkpoint=5 --epsilon_end=0.01 > results/test7.out

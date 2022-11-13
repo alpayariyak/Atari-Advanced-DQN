@@ -14,6 +14,7 @@ from agent import Agent
 from dqn_model import DQN
 from ExperienceBuffer import *
 
+
 """
 you can import any package and define any extra function as you need
 """
@@ -59,7 +60,7 @@ class Agent_DQN(Agent):
 
         self.learning_rate = args.learning_rate
         self.loss = torch.nn.SmoothL1Loss()
-        self.optimizer = optim.Adam(self.Q_network.parameters(), lr=self.learning_rate)
+        self.optimizer = optim.Adam(self.Q_network.parameters(), lr=args.learning_rate, eps=1.5e-4)
 
         self.current_episode = 0
 
@@ -73,6 +74,8 @@ class Agent_DQN(Agent):
         self.rewards_list = []
         self.action_counter = {0: 0, 1: 0, 2: 0, 3: 0}
 
+        self.test_n = args.test_n
+
         if args.test_dqn:
             # you can load your model here
             print('loading trained model')
@@ -80,6 +83,14 @@ class Agent_DQN(Agent):
             self.Q_network.eval()
             ###########################
             # YOUR IMPLEMENTATION HERE #
+        if args.load_checkpoint != False:
+            self.Q_network.load_state_dict(torch.load(f'checkpoints/test{args.load_checkpoint}.pt', map_location=self.device))
+            self.optimizer = optim.Adam(self.Q_network.parameters(), lr=args.learning_rate, eps=1.5e-4)
+            self.update_target()
+            self.epsilon_stepsize = 0
+            self.epsilon = 0.01
+
+        
 
     def update_target(self):
         self.Q_target_network.load_state_dict(self.Q_network.state_dict())
@@ -145,16 +156,16 @@ class Agent_DQN(Agent):
         states, actions, rewards, next_states, terminals = [list_to_tensor(sample).to(self.device) for sample in samples]
         actions, rewards, terminals = actions.unsqueeze(1), rewards.unsqueeze(1), terminals.unsqueeze(1)
         Q_values = self.Q_network(states).gather(1, actions)
-        max_Q_target_next_states = self.Q_target_network(next_states).max(1)[0].view(self.minibatch_size, 1)
+        max_Q_target_next_states = self.Q_target_network(next_states).max(1)[0].view(self.minibatch_size, 1).detach()
         Q_target_values = rewards + self.gamma * max_Q_target_next_states * (1 - terminals.long())
-        print(Q_target_values.shape, print(Q_values.shape))
-        loss = self.loss(Q_values, Q_target_values.detach())
-        self.loss_list.append(loss.item())
+        loss = self.loss(Q_values, Q_target_values)
+
         self.optimizer.zero_grad()
         loss.backward()
         if self.clip_grad:
             torch.nn.utils.clip_grad_norm_(self.Q_network.parameters(), 1.0)
         self.optimizer.step()
+        
 
     def train(self):
         """
@@ -166,7 +177,7 @@ class Agent_DQN(Agent):
         for episode in range(self.n_episodes):
             self.current_episode = episode
             episode_reward, episode_length = self.run_episode()
-            avg_last_30_ep_rewards += episode_reward/30
+            # avg_last_30_ep_rewards += episode_reward/30
 
             if episode % self.optimize_interval == 0:
                 self.optimize()
@@ -175,15 +186,17 @@ class Agent_DQN(Agent):
             if episode % self.evaluate_interval == 0:
                 self.evaluate()
 
-            if episode % 30 == 0 and episode != 0:
-                avg_last_30_ep_rewards = 0
-                self.rewards_list.append(avg_last_30_ep_rewards)
+            # if episode % 30 == 0 and episode != 0:
+            #     avg_last_30_ep_rewards = 0
+            #     # self.rewards_list.append(avg_last_30_ep_rewards)
 
-            if episode % 100000 == 0:
-                torch.save(self.Q_network.state_dict(), 'checkpoints/test5')
-            if episode % 500000 == 0:
-                with open("test5loss.txt", "w") as output:
-                    output.write(str(self.loss_list))
+            if episode % 50000 == 0:
+                if self.test_n:
+                    torch.save(self.Q_network.state_dict(), f'checkpoints/test{self.test_n}.pt')
+                
+            # if episode % 100000 == 0:
+            #     with open("test5loss.txt", "w") as output:
+            #         output.write(str(self.loss_list))
 
             self.update_epsilon()
 
@@ -199,7 +212,7 @@ class Agent_DQN(Agent):
         self.Q_network.train()
 
         print(f"Episode: {self.current_episode}  Reward: {episode_rewards / eval_episodes}")
-        print(f"Epsilon: {self.epsilon}  Last 5 Losses: {self.loss_list[-5:]}")
+        print(f"Epsilon: {self.epsilon}")
         print(self.action_counter)
         print(f"Ep length: {episode_lengths / eval_episodes}\n")
 
