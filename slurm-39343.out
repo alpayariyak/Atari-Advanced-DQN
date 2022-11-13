@@ -1,7 +1,0 @@
-A.L.E: Arcade Learning Environment (version 0.7.5+db37282)
-[Powered by Stella]
-/home/aariyak/miniconda3/envs/DS595RL/lib/python3.9/site-packages/gym/core.py:317: DeprecationWarning: [33mWARN: Initializing wrapper in old step API which returns one bool instead of two. It is recommended to set `new_step_api=True` to use new step API. This will be the default behaviour in future.[0m
-  deprecation(
-/home/aariyak/miniconda3/envs/DS595RL/lib/python3.9/site-packages/gym/utils/passive_env_checker.py:227: DeprecationWarning: [33mWARN: Core environment is written in old step API which returns one bool instead of two. It is recommended to rewrite the environment with new step API. [0m
-  logger.deprecation(
-slurmstepd: error: *** JOB 39343 ON gpu-4-12 CANCELLED AT 2022-11-11T05:14:45 DUE TO TIME LIMIT ***
