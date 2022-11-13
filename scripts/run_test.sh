@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 #SBATCH -N 1
 #SBATCH -c 4
-#SBATCH --gres=gpu:1
 #SBATCH -t 0:3:00
 #SBATCH --mem 8G
 

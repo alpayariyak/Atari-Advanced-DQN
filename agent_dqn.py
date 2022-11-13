@@ -79,7 +79,7 @@ class Agent_DQN(Agent):
         if args.test_dqn:
             # you can load your model here
             print('loading trained model')
-            self.Q_network.load_state_dict(torch.load('checkpoints/test5.pt'))
+            self.Q_network.load_state_dict(torch.load('checkpoints/test9.pt', map_location=self.device))
             self.Q_network.eval()
             ###########################
             # YOUR IMPLEMENTATION HERE #
