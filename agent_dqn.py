@@ -39,7 +39,7 @@ class Agent_DQN(Agent):
         ###########################
         # YOUR IMPLEMENTATION HERE #
 
-        self.buffer_size = args.buffer_size
+        self.buffer_size = 10000#args.buffer_size TODO:
         self.minibatch_size = args.batch_size
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
         print(self.device)
@@ -80,6 +80,13 @@ class Agent_DQN(Agent):
             self.Q_network.eval()
             ###########################
             # YOUR IMPLEMENTATION HERE #
+
+        if True:
+            self.Q_network.load_state_dict(torch.load('checkpoints/test5.pt', map_location=self.device))
+            self.update_target()
+            self.epsilon_stepsize = 0
+            self.epsilon = 0.1
+
 
     def update_target(self):
         self.Q_target_network.load_state_dict(self.Q_network.state_dict())
@@ -175,15 +182,15 @@ class Agent_DQN(Agent):
             if episode % self.evaluate_interval == 0:
                 self.evaluate()
 
-            if episode % 30 == 0 and episode != 0:
-                avg_last_30_ep_rewards = 0
-                self.rewards_list.append(avg_last_30_ep_rewards)
+            # if episode % 30 == 0 and episode != 0:
+            #     self.rewards_list.append(avg_last_30_ep_rewards)
+            #     avg_last_30_ep_rewards = 0
 
-            if episode % 100000 == 0:
-                torch.save(self.Q_network.state_dict(), 'checkpoints/test5')
-            if episode % 500000 == 0:
-                with open("test5loss.txt", "w") as output:
-                    output.write(str(self.loss_list))
+            # if episode % 100000 == 0:
+            #     torch.save(self.Q_network.state_dict(), 'checkpoints/test5')
+            # if episode % 500000 == 0:
+            #     with open("test5loss.txt", "w") as output:
+            #         output.write(str(self.loss_list))
 
             self.update_epsilon()
 

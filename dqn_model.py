@@ -31,14 +31,14 @@ class DQN(nn.Module):
         ###########################
         # YOUR IMPLEMENTATION HERE #
         self.device = device
-        self.conv1 = nn.Conv2d(in_channels, 32, kernel_size=8, stride=4, bias=False)
-        self.conv2 = nn.Conv2d(32, 64, kernel_size=4, stride=2, bias=False)
-        self.conv3 = nn.Conv2d(64, 64, kernel_size=3, stride=1, bias=False)
+        self.conv1 = nn.Conv2d(in_channels, 32, kernel_size=8, stride=4)
+        self.conv2 = nn.Conv2d(32, 64, kernel_size=4, stride=2)
+        self.conv3 = nn.Conv2d(64, 64, kernel_size=3, stride=1)
         self.fc1 = nn.Linear(64 * 7 * 7, 512)
         self.fc2 = nn.Linear(512, num_actions)
 
-        if initialize_weights:
-            self.initialize_weights()
+        # if initialize_weights:
+        #     self.initialize_weights()
 
         self.to(self.device)
 

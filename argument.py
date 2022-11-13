@@ -24,5 +24,5 @@ def add_arguments(parser):
     parser.add_argument('--evaluate_interval', type=int, default=10000, help='evaluate_interval')
 
     parser.add_argument('--initialize_weights', type=bool, default=False, help='Initialize manually or pytorch')
-    parser.add_argument('--clip_grad', type=bool, default=False, help='to clip grads or not')
+    parser.add_argument('--clip_grad', type=bool, default=True, help='to clip grads or not')
     return parser
