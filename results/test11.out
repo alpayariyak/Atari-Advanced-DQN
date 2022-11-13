@@ -1,1 +1,31 @@
 cuda
+Episode: 0  Reward: 8.33
+Epsilon: 0.01
+{0: 8774, 1: 6864, 2: 5699, 3: 7031}
+Ep length: 283.68
+
+Episode: 10000  Reward: 2.89
+Epsilon: 0.01
+{0: 4454, 1: 3178, 2: 2262, 3: 2863}
+Ep length: 127.57
+
+Episode: 20000  Reward: 4.97
+Epsilon: 0.01
+{0: 6192, 1: 3805, 2: 3969, 3: 4383}
+Ep length: 183.49
+
+Episode: 30000  Reward: 6.53
+Epsilon: 0.01
+{0: 6765, 1: 6996, 2: 3507, 3: 4807}
+Ep length: 220.75
+
+Episode: 40000  Reward: 10.78
+Epsilon: 0.01
+{0: 10700, 1: 8381, 2: 5510, 3: 6156}
+Ep length: 307.47
+
+Episode: 50000  Reward: 8.11
+Epsilon: 0.01
+{0: 7844, 1: 8520, 2: 4320, 3: 5164}
+Ep length: 258.48
+

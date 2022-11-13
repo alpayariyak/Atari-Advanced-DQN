@@ -79,14 +79,15 @@ class Agent_DQN(Agent):
         if args.test_dqn:
             # you can load your model here
             print('loading trained model')
-            self.Q_network.load_state_dict(torch.load('checkpoints/test9.pt', map_location=self.device))
-            self.Q_network.eval()
+            self.Q_network_1.load_state_dict(torch.load('checkpoints/test12.pt', map_location=self.device))
+            self.Q_network_1.eval()
             ###########################
             # YOUR IMPLEMENTATION HERE #
         if args.load_checkpoint != False:
-            self.Q_network.load_state_dict(torch.load(f'checkpoints/test{args.load_checkpoint}.pt', map_location=self.device))
-            self.optimizer = optim.Adam(self.Q_network.parameters(), lr=args.learning_rate, eps=1.5e-4)
-            self.update_target()
+            self.Q_network_1.load_state_dict(torch.load(f'checkpoints/test10.pt', map_location=self.device))
+            self.optimizer_1 = optim.Adam(self.Q_network_1.parameters(), lr=args.learning_rate, eps=1.5e-4)
+            self.Q_network_2.load_state_dict(torch.load(f'checkpoints/test12.pt', map_location=self.device))
+            self.optimizer_2 = optim.Adam(self.Q_network_2.parameters(), lr=args.learning_rate, eps=1.5e-4)
             self.epsilon_stepsize = 0
             self.epsilon = 0.01
 
@@ -125,7 +126,7 @@ class Agent_DQN(Agent):
         # YOUR IMPLEMENTATION HERE #
         if random.random() < 1 - self.epsilon or test:
             with torch.no_grad():
-                action = self.Q_network(torch.from_numpy(observation).unsqueeze(0)).argmax().item()
+                action = self.Q_network_1(torch.from_numpy(observation).unsqueeze(0)).argmax().item()
                 self.action_counter[action] += 1
         else:
             action = self.env.action_space.sample()
@@ -159,23 +160,26 @@ class Agent_DQN(Agent):
         Q_1_values = self.Q_network_1(states).gather(1, actions)
         Q_2_values = self.Q_network_2(states).gather(1, actions)
 
-        max_Q_target_next_states = torch.min(self.Q_1_network(next_states).max(1)[0].view(self.minibatch_size, 1), self.Q_2_network(next_states).max(1)[0].view(self.minibatch_size, 1)).detach()
+        max_Q_target_next_states = torch.min(self.Q_network_1(next_states).max(1)[0].view(self.minibatch_size, 1), self.Q_network_2(next_states).max(1)[0].view(self.minibatch_size, 1)).detach()
         Q_target_values = rewards + self.gamma * max_Q_target_next_states * (1 - terminals.long())
 
         loss_1 = self.loss(Q_1_values, Q_target_values)
         loss_2 = self.loss(Q_2_values, Q_target_values)
 
         self.optimizer_1.zero_grad()
-        self.optimizer_2.zero_grad()
+        
 
         loss_1.backward()
-        loss_2.backward()
-
+        
         if self.clip_grad:
             torch.nn.utils.clip_grad_norm_(self.Q_network_1.parameters(), 1.0)
             torch.nn.utils.clip_grad_norm_(self.Q_network_2.parameters(), 1.0)
 
         self.optimizer_1.step()
+        
+        self.optimizer_2.zero_grad()
+        loss_2.backward()
+
         self.optimizer_2.step()
         
 
@@ -193,8 +197,6 @@ class Agent_DQN(Agent):
 
             if episode % self.optimize_interval == 0:
                 self.optimize()
-            if episode % self.target_update_interval == 0:
-                self.update_target()
             if episode % self.evaluate_interval == 0:
                 self.evaluate()
 
@@ -204,7 +206,7 @@ class Agent_DQN(Agent):
 
             if episode % 50000 == 0:
                 if self.test_n:
-                    torch.save(self.Q_network.state_dict(), f'checkpoints/test{self.test_n}.pt')
+                    torch.save(self.Q_network_1.state_dict(), f'checkpoints/test{self.test_n}.pt')
                 
             # if episode % 100000 == 0:
             #     with open("test5loss.txt", "w") as output:
@@ -216,12 +218,12 @@ class Agent_DQN(Agent):
         self.action_counter = {0: 0, 1: 0, 2: 0, 3: 0}
         episode_rewards = 0
         episode_lengths = 0
-        self.Q_network.eval()
+        self.Q_network_1.eval()
         for episode in range(eval_episodes):
             episode_reward, episode_length = self.run_episode(test=True)
             episode_rewards += episode_reward
             episode_lengths += episode_length
-        self.Q_network.train()
+        self.Q_network_1.train()
 
         print(f"Episode: {self.current_episode}  Reward: {episode_rewards / eval_episodes}")
         print(f"Epsilon: {self.epsilon}")
