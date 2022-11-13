@@ -54,13 +54,13 @@ class Agent_DQN(Agent):
         self.decay_end = args.decay_end if args.decay_end else int(self.n_episodes / 2)
         self.epsilon_stepsize = (self.epsilon_range[0] - self.epsilon_range[1]) / (self.decay_end - self.decay_start)
 
-        self.Q_network = DQN(self.device, initialize_weights=args.initialize_weights)
-        self.Q_target_network = DQN(self.device).eval()
-        self.update_target()
+        self.Q_network_1 = DQN(self.device, initialize_weights=args.initialize_weights)
+        self.Q_network_2 = DQN(self.device, initialize_weights=args.initialize_weights)
 
         self.learning_rate = args.learning_rate
         self.loss = torch.nn.SmoothL1Loss()
-        self.optimizer = optim.Adam(self.Q_network.parameters(), lr=args.learning_rate, eps=1.5e-4)
+        self.optimizer_1 = optim.Adam(self.Q_network_1.parameters(), lr=self.learning_rate, eps=1.5e-4)
+        self.optimizer_2 = optim.Adam(self.Q_network_2.parameters(), lr=self.learning_rate, eps=1.5e-4)
 
         self.current_episode = 0
 
@@ -155,16 +155,28 @@ class Agent_DQN(Agent):
         samples = self.buffer.sample_experiences()
         states, actions, rewards, next_states, terminals = [list_to_tensor(sample).to(self.device) for sample in samples]
         actions, rewards, terminals = actions.unsqueeze(1), rewards.unsqueeze(1), terminals.unsqueeze(1)
-        Q_values = self.Q_network(states).gather(1, actions)
-        max_Q_target_next_states = self.Q_target_network(next_states).max(1)[0].view(self.minibatch_size, 1).detach()
-        Q_target_values = rewards + self.gamma * max_Q_target_next_states * (1 - terminals.long())
-        loss = self.loss(Q_values, Q_target_values)
 
-        self.optimizer.zero_grad()
-        loss.backward()
+        Q_1_values = self.Q_network_1(states).gather(1, actions)
+        Q_2_values = self.Q_network_2(states).gather(1, actions)
+
+        max_Q_target_next_states = torch.min(self.Q_1_network(next_states).max(1)[0].view(self.minibatch_size, 1), self.Q_2_network(next_states).max(1)[0].view(self.minibatch_size, 1)).detach()
+        Q_target_values = rewards + self.gamma * max_Q_target_next_states * (1 - terminals.long())
+
+        loss_1 = self.loss(Q_1_values, Q_target_values)
+        loss_2 = self.loss(Q_2_values, Q_target_values)
+
+        self.optimizer_1.zero_grad()
+        self.optimizer_2.zero_grad()
+
+        loss_1.backward()
+        loss_2.backward()
+
         if self.clip_grad:
-            torch.nn.utils.clip_grad_norm_(self.Q_network.parameters(), 1.0)
-        self.optimizer.step()
+            torch.nn.utils.clip_grad_norm_(self.Q_network_1.parameters(), 1.0)
+            torch.nn.utils.clip_grad_norm_(self.Q_network_2.parameters(), 1.0)
+
+        self.optimizer_1.step()
+        self.optimizer_2.step()
         
 
     def train(self):
