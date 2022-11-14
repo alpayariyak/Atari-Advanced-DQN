@@ -13,7 +13,7 @@ class ExperienceBuffer:
         self.device = device
 
     def is_full(self):
-        return len(self.buffer) == self.max_buffer_capacity
+        return len(self.buffer) == 50000
 
     def push(self, experience_tuple):  # (s, a, r, s', is_terminal)
         """ You can add additional arguments as you need.

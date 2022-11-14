@@ -1,0 +1,81 @@
+cuda
+Episode: 0  Reward: 9.52
+Epsilon: 0.01
+{0: 6502, 1: 11570, 2: 4768, 3: 6230}
+Ep length: 290.7
+
+Episode: 10000  Reward: 6.09
+Epsilon: 0.01
+{0: 4594, 1: 6119, 2: 3633, 3: 4531}
+Ep length: 188.77
+
+Episode: 20000  Reward: 8.17
+Epsilon: 0.01
+{0: 3928, 1: 9846, 2: 4416, 3: 7058}
+Ep length: 252.48
+
+Episode: 30000  Reward: 3.84
+Epsilon: 0.01
+{0: 1712, 1: 4621, 2: 4013, 3: 4273}
+Ep length: 146.19
+
+Episode: 40000  Reward: 7.29
+Epsilon: 0.01
+{0: 6159, 1: 8544, 2: 3755, 3: 4714}
+Ep length: 231.72
+
+Episode: 50000  Reward: 6.17
+Epsilon: 0.01
+{0: 2656, 1: 10388, 2: 2775, 3: 5187}
+Ep length: 210.06
+
+Episode: 60000  Reward: 10.57
+Epsilon: 0.01
+{0: 12748, 1: 4668, 2: 4639, 3: 6960}
+Ep length: 290.15
+
+Episode: 70000  Reward: 10.47
+Epsilon: 0.01
+{0: 14939, 1: 9308, 2: 3087, 3: 4361}
+Ep length: 316.95
+
+Episode: 80000  Reward: 10.96
+Epsilon: 0.01
+{0: 9088, 1: 12339, 2: 5271, 3: 6064}
+Ep length: 327.62
+
+Episode: 90000  Reward: 10.21
+Epsilon: 0.01
+{0: 8589, 1: 9700, 2: 4530, 3: 5373}
+Ep length: 281.92
+
+Episode: 100000  Reward: 10.81
+Epsilon: 0.01
+{0: 5292, 1: 7831, 2: 6827, 3: 8540}
+Ep length: 284.9
+
+Episode: 110000  Reward: 12.16
+Epsilon: 0.01
+{0: 7757, 1: 10282, 2: 5292, 3: 6390}
+Ep length: 297.21
+
+Episode: 120000  Reward: 9.54
+Epsilon: 0.01
+{0: 11185, 1: 2556, 2: 4548, 3: 6119}
+Ep length: 244.08
+
+Episode: 130000  Reward: 14.2
+Epsilon: 0.01
+{0: 11735, 1: 7151, 2: 4384, 3: 6606}
+Ep length: 298.76
+
+Episode: 140000  Reward: 11.69
+Epsilon: 0.01
+{0: 14156, 1: 3645, 2: 4154, 3: 5014}
+Ep length: 269.69
+
+Episode: 150000  Reward: 13.23
+Epsilon: 0.01
+{0: 9503, 1: 7170, 2: 5925, 3: 8685}
+Ep length: 312.83
+

@@ -69,3 +69,38 @@ Epsilon: 0.01
 {0: 12848, 1: 9214, 2: 2381, 3: 3237}
 Ep length: 276.8
 
+Episode: 140000  Reward: 7.69
+Epsilon: 0.01
+{0: 12289, 1: 6593, 2: 2323, 3: 2677}
+Ep length: 238.82
+
+Episode: 150000  Reward: 9.97
+Epsilon: 0.01
+{0: 12822, 1: 10475, 2: 3290, 3: 3841}
+Ep length: 304.28
+
+Episode: 160000  Reward: 11.42
+Epsilon: 0.01
+{0: 12342, 1: 7586, 2: 4453, 3: 5347}
+Ep length: 297.28
+
+Episode: 170000  Reward: 9.87
+Epsilon: 0.01
+{0: 13125, 1: 6261, 2: 2827, 3: 3317}
+Ep length: 255.3
+
+Episode: 180000  Reward: 13.36
+Epsilon: 0.01
+{0: 12723, 1: 8425, 2: 3854, 3: 4913}
+Ep length: 299.15
+
+Episode: 190000  Reward: 11.21
+Epsilon: 0.01
+{0: 9643, 1: 10914, 2: 4623, 3: 6577}
+Ep length: 317.57
+
+Episode: 200000  Reward: 11.63
+Epsilon: 0.01
+{0: 10791, 1: 8901, 2: 3693, 3: 4603}
+Ep length: 279.88
+
