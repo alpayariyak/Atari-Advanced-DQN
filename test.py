@@ -1,10 +1,3 @@
-"""
-
-### NOTICE ###
-You DO NOT need to upload this file
-
-"""
-
 import argparse
 import numpy as np
 from environment import Environment

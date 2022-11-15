@@ -1,9 +1,3 @@
-"""
-
-### NOTICE ###
-You DO NOT need to upload this file
-
-"""
 import gym
 import numpy as np
 from atari_wrapper import make_wrap_atari

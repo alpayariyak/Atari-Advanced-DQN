@@ -26,13 +26,3 @@ class Agent(object):
                 the predicted action from trained model
         """
         raise NotImplementedError("Subclasses should implement this!")
-
-
-    def init_game_setting(self):
-        """
-
-        Testing function will call this function at the begining of new game
-        Put anything you want to initialize if necessary
-
-        """
-        raise NotImplementedError("Subclasses should implement this!")

@@ -14,7 +14,6 @@ from agent import Agent
 from dqn_model import DQN
 from ExperienceBuffer import *
 
-
 """
 you can import any package and define any extra function as you need
 """
@@ -26,20 +25,7 @@ random.seed(595)
 
 class Agent_DQN(Agent):
     def __init__(self, env, args):
-        """
-        Initialize everything you need here.
-        For example: 
-            paramters for neural network  
-            initialize Q net and target Q net
-            parameters for repaly buffer
-            parameters for q-learning; decaying epsilon-greedy
-            ...
-        """
-
         super(Agent_DQN, self).__init__(env)
-        ###########################
-        # YOUR IMPLEMENTATION HERE #
-
         self.buffer_size = args.buffer_size
         self.minibatch_size = args.batch_size
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -81,16 +67,14 @@ class Agent_DQN(Agent):
             print('loading trained model')
             self.Q_network.load_state_dict(torch.load('checkpoints/test9.pt', map_location=self.device))
             self.Q_network.eval()
-            ###########################
-            # YOUR IMPLEMENTATION HERE #
+
         if args.load_checkpoint != False:
-            self.Q_network.load_state_dict(torch.load(f'checkpoints/test{args.load_checkpoint}.pt', map_location=self.device))
+            self.Q_network.load_state_dict(
+                torch.load(f'checkpoints/test{args.load_checkpoint}.pt', map_location=self.device))
             self.optimizer = optim.Adam(self.Q_network.parameters(), lr=args.learning_rate, eps=1.5e-4)
             self.update_target()
             self.epsilon_stepsize = 0
             self.epsilon = 0.01
-
-        
 
     def update_target(self):
         self.Q_target_network.load_state_dict(self.Q_network.state_dict())
@@ -98,18 +82,6 @@ class Agent_DQN(Agent):
     def update_epsilon(self):
         if self.current_episode > self.decay_start:
             self.epsilon = max(self.epsilon - self.epsilon_stepsize, self.epsilon_range[1])
-
-    def init_game_setting(self):
-        """
-        Testing function will call this function at the begining of new game
-        Put anything you want to initialize if necessary.
-        If no parameters need to be initialized, you can leave it as blank.
-        """
-        ###########################
-        # YOUR IMPLEMENTATION HERE #
-
-        ###########################
-        pass
 
     def make_action(self, observation, test=False):
         """
@@ -121,15 +93,12 @@ class Agent_DQN(Agent):
             action: int
                 the predicted action from trained model
         """
-        ###########################
-        # YOUR IMPLEMENTATION HERE #
         if random.random() < 1 - self.epsilon or test:
             with torch.no_grad():
                 action = self.Q_network(torch.from_numpy(observation).unsqueeze(0)).argmax().item()
                 self.action_counter[action] += 1
         else:
             action = self.env.action_space.sample()
-        ###########################
         return action
 
     def run_episode(self, test=False):
@@ -153,7 +122,8 @@ class Agent_DQN(Agent):
 
     def optimize(self):
         samples = self.buffer.sample_experiences()
-        states, actions, rewards, next_states, terminals = [list_to_tensor(sample).to(self.device) for sample in samples]
+        states, actions, rewards, next_states, terminals = [list_to_tensor(sample).to(self.device) for sample in
+                                                            samples]
         actions, rewards, terminals = actions.unsqueeze(1), rewards.unsqueeze(1), terminals.unsqueeze(1)
         Q_values = self.Q_network(states).gather(1, actions)
         max_Q_target_next_states = self.Q_target_network(next_states).max(1)[0].view(self.minibatch_size, 1).detach()
@@ -165,19 +135,17 @@ class Agent_DQN(Agent):
         if self.clip_grad:
             torch.nn.utils.clip_grad_norm_(self.Q_network.parameters(), 1.0)
         self.optimizer.step()
-        
 
     def train(self):
         """
         Implement your training algorithm here
         """
         self.fill_buffer()
-        avg_last_30_ep_rewards = 0
 
         for episode in range(self.n_episodes):
             self.current_episode = episode
-            episode_reward, episode_length = self.run_episode()
-            # avg_last_30_ep_rewards += episode_reward/30
+
+            self.run_episode()
 
             if episode % self.optimize_interval == 0:
                 self.optimize()
@@ -186,17 +154,9 @@ class Agent_DQN(Agent):
             if episode % self.evaluate_interval == 0:
                 self.evaluate()
 
-            # if episode % 30 == 0 and episode != 0:
-            #     avg_last_30_ep_rewards = 0
-            #     # self.rewards_list.append(avg_last_30_ep_rewards)
-
             if episode % 50000 == 0:
                 if self.test_n:
                     torch.save(self.Q_network.state_dict(), f'checkpoints/test{self.test_n}.pt')
-                
-            # if episode % 100000 == 0:
-            #     with open("test5loss.txt", "w") as output:
-            #         output.write(str(self.loss_list))
 
             self.update_epsilon()
 

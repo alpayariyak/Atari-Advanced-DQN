@@ -1,9 +1,3 @@
-"""
-
-### NOTICE ###
-You DO NOT need to upload this file
-
-"""
 import argparse
 from test import test
 from environment import Environment
@@ -11,7 +5,7 @@ import time
 
 
 def parse():
-    parser = argparse.ArgumentParser(description="DS595/CS525 RL PRoject4")
+    parser = argparse.ArgumentParser(description="Breakout")
     parser.add_argument('--env_name', default=None, help='environment name')
     parser.add_argument('--train_dqn', action='store_true', help='whether train DQN')
     parser.add_argument('--test_dqn', action='store_true', help='whether test DQN')

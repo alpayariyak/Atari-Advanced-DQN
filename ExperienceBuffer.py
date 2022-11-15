@@ -16,26 +16,12 @@ class ExperienceBuffer:
         return len(self.buffer) == self.max_buffer_capacity
 
     def push(self, experience_tuple):  # (s, a, r, s', is_terminal)
-        """ You can add additional arguments as you need.
-        Push new data to buffer and remove the old one if the buffer is full.
-
-        Hints:
-        -----
-            you can consider deque(maxlen = 10000) list
-        """
-        ###########################
-        # YOUR IMPLEMENTATION HERE #
         self.buffer.append(experience_tuple)
 
-        ###########################
-
     def sample_experiences(self):
-        """ You can add additional arguments as you need.
+        """
         Select batch from buffer.
         """
-        ###########################
-        # YOUR IMPLEMENTATION HERE #
-
         sampled_tuples = random.sample(self.buffer, self.minibatch_size)
         states, actions, rewards, next_states, terminals = [], [], [], [], []
 

@@ -4,18 +4,16 @@ import torch.nn as nn
 import torch.nn.functional as F
 import torch
 
+
 class DQN(nn.Module):
     """Initialize a deep Q-learning network
 
-    Hints:
-    -----
-        Original paper for DQN
+    Original paper for DQN
     https://storage.googleapis.com/deepmind-data/assets/papers/DeepMindNature14236Paper.pdf
 
-    This is just a hint. You can build your own structure.
     """
 
-    def __init__(self, device, initialize_weights = False, in_channels=4, num_actions=4):
+    def __init__(self, device, initialize_weights=False, in_channels=4, num_actions=4):
         """
         Parameters:
         -----------
@@ -23,7 +21,6 @@ class DQN(nn.Module):
                 i.e The number of most recent frames stacked together, here we use 4 frames, which means each state in Breakout is composed of 4 frames.
         num_actions: number of action-value to output, one-to-one correspondence to action in game.
 
-        You can add additional arguments as you need.
         In the constructor we instantiate modules and assign them as
         member variables.
         """
@@ -48,8 +45,6 @@ class DQN(nn.Module):
         a Tensor of output data. We can use Modules defined in the constructor as
         well as arbitrary operators on Tensors.
         """
-        ###########################
-        # YOUR IMPLEMENTATION HERE #
         # Using the original Deepmind architecture
         x = x.permute(0, 3, 1, 2).float().to(self.device) / 255.0  # Normalization
         # CNN
