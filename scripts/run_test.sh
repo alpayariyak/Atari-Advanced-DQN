@@ -4,4 +4,4 @@
 #SBATCH -t 0:3:00
 #SBATCH --mem 5G
 
-python -u main.py --test_dqn > test_out16-5.out
+python -u main.py --test_dqn > test_out18-1.out

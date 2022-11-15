@@ -79,17 +79,17 @@ class Agent_DQN(Agent):
         if args.test_dqn:
             # you can load your model here
             print('loading trained model')
-            self.Q_network_1.load_state_dict(torch.load('checkpoints/test15_single.pt', map_location=self.device))
+            self.Q_network_1.load_state_dict(torch.load('checkpoints/test18.pt', map_location=self.device))
             self.Q_network_1.eval()
             ###########################
             # YOUR IMPLEMENTATION HERE #
-        # if args.load_checkpoint != False:
-        #     self.Q_network_1.load_state_dict(torch.load(f'checkpoints/test12.pt', map_location=self.device))
-        #     self.optimizer_1 = optim.Adam(self.Q_network_1.parameters(), lr=args.learning_rate, eps=1.5e-4)
-        #     self.Q_network_2.load_state_dict(torch.load(f'checkpoints/test10.pt', map_location=self.device))
-        #     self.optimizer_2 = optim.Adam(self.Q_network_2.parameters(), lr=args.learning_rate, eps=1.5e-4)
-        #     self.epsilon_stepsize = 0
-        #     self.epsilon = 0.01
+        
+        self.Q_network_1.load_state_dict(torch.load(f'checkpoints/test18.pt', map_location=self.device))
+        self.optimizer_1 = optim.Adam(self.Q_network_1.parameters(), lr=args.learning_rate, eps=1.5e-4)
+        self.Q_network_2.load_state_dict(torch.load(f'checkpoints/test13.pt', map_location=self.device))
+        self.optimizer_2 = optim.Adam(self.Q_network_2.parameters(), lr=args.learning_rate, eps=1.5e-4)
+        self.epsilon_stepsize = 0
+        self.epsilon = 0.01
 
         
 
@@ -194,7 +194,7 @@ class Agent_DQN(Agent):
             episode_reward, episode_length = self.run_episode()
             avg_last_30_ep_rewards += episode_reward/30
 
-            if episode % self.optimize_interval == 0 and len(self.buffer.buffer) > 50000:
+            if episode % self.optimize_interval == 0 and len(self.buffer.buffer) > 80000:
                 self.optimize()
             if episode % 30 == 0 and episode != 0:
                 self.rewards_list.append(avg_last_30_ep_rewards)
@@ -203,9 +203,8 @@ class Agent_DQN(Agent):
             if episode % 10000 == 0:
                 self.evaluate()
 
-            if episode % 20000 == 0:
-                if self.test_n:
-                    torch.save(self.Q_network_1.state_dict(), f'checkpoints/test{self.test_n}.pt')
+            if episode % 10000 == 0:
+                torch.save(self.Q_network_1.state_dict(), f'checkpoints/test{self.test_n}.pt')
                 
             if episode % 100000 == 0:
                 with open(f"test{self.test_n}loss.txt", "w") as output:

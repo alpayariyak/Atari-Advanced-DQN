@@ -1,26 +1,21 @@
-cpu
-Episode: 0  Reward: 0.38
-Epsilon: 1
-{0: 0, 1: 3605, 2: 0, 3: 0}
-Ep length: 36.05
+cuda
+Episode: 0  Reward: 12.41
+Epsilon: 0.01
+{0: 8196, 1: 3439, 2: 8148, 3: 10830}
+Ep length: 306.13
 
-Episode: 10000  Reward: 0.33
-Epsilon: 0.9175082499995706
-{0: 26, 1: 2493, 2: 1059, 3: 1}
-Ep length: 35.79
+Episode: 10000  Reward: 14.56
+Epsilon: 0.01
+{0: 7979, 1: 14502, 2: 5864, 3: 6644}
+Ep length: 349.89
 
-Episode: 20000  Reward: 0.26
-Epsilon: 0.8350082499991411
-{0: 1605, 1: 993, 2: 315, 3: 318}
-Ep length: 32.31
+Episode: 20000  Reward: 18.17
+Epsilon: 0.01
+{0: 8422, 1: 18633, 2: 4228, 3: 6260}
+Ep length: 375.43
 
-Episode: 30000  Reward: 0.26
-Epsilon: 0.7525082499987117
-{0: 1722, 1: 668, 2: 1063, 3: 22}
-Ep length: 34.75
-
-Episode: 40000  Reward: 0.55
-Epsilon: 0.6700082499982822
-{0: 178, 1: 1323, 2: 2271, 3: 805}
-Ep length: 45.77
+Episode: 30000  Reward: 17.14
+Epsilon: 0.01
+{0: 10316, 1: 9858, 2: 6613, 3: 10156}
+Ep length: 369.43
 
