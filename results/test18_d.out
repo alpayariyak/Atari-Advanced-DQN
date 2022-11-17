@@ -1,6 +1,6 @@
 cuda
-Episode: 0  Reward: 18.14
+Episode: 0  Reward: 17.96
 Epsilon: 0.01
-{0: 8378, 1: 18165, 2: 4233, 3: 6321}
-Ep length: 370.97
+{0: 8219, 1: 18202, 2: 4071, 3: 6008}
+Ep length: 365.0
 

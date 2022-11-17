@@ -79,17 +79,17 @@ class Agent_DQN(Agent):
         if args.test_dqn:
             # you can load your model here
             print('loading trained model')
-            self.Q_network_1.load_state_dict(torch.load('checkpoints/test18.pt', map_location=self.device))
+            self.Q_network_1.load_state_dict(torch.load('checkpoints/test21.pt', map_location=self.device))
             self.Q_network_1.eval()
             ###########################
             # YOUR IMPLEMENTATION HERE #
         
-        self.Q_network_1.load_state_dict(torch.load(f'checkpoints/test18.pt', map_location=self.device))
-        self.optimizer_1 = optim.Adam(self.Q_network_1.parameters(), lr=args.learning_rate, eps=1.5e-4)
-        self.Q_network_2.load_state_dict(torch.load(f'checkpoints/test13.pt', map_location=self.device))
-        self.optimizer_2 = optim.Adam(self.Q_network_2.parameters(), lr=args.learning_rate, eps=1.5e-4)
-        self.epsilon_stepsize = 0
-        self.epsilon = 0.01
+        # self.Q_network_1.load_state_dict(torch.load(f'checkpoints/test26.pt', map_location=self.device))
+        # self.optimizer_1 = optim.Adam(self.Q_network_1.parameters(), lr=args.learning_rate, eps=1.5e-4)
+        # self.Q_network_2.load_state_dict(torch.load(f'checkpoints/test13.pt', map_location=self.device))
+        # self.optimizer_2 = optim.Adam(self.Q_network_2.parameters(), lr=args.learning_rate, eps=1.5e-4)
+        # self.epsilon_stepsize = 0
+        # self.epsilon = 0.01
 
         
 
@@ -206,7 +206,7 @@ class Agent_DQN(Agent):
             if episode % 10000 == 0:
                 torch.save(self.Q_network_1.state_dict(), f'checkpoints/test{self.test_n}.pt')
                 
-            if episode % 100000 == 0:
+            if episode % 30000 == 0:
                 with open(f"test{self.test_n}loss.txt", "w") as output:
                     output.write(str(self.loss_list))
                 with open(f"test{self.test_n}rewards.txt", "w") as output:
