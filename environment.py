@@ -13,7 +13,7 @@ class Environment(object):
 
         self.action_space = self.env.action_space
         self.observation_space = self.env.observation_space
-        
+
     def seed(self, seed):
         '''
         Control the randomness of the environment
@@ -30,8 +30,7 @@ class Environment(object):
 
         return np.array(observation)
 
-
-    def step(self,action):
+    def step(self, action):
         '''
         When running dqn:
             observation: np.array
@@ -49,14 +48,11 @@ class Environment(object):
 
         return np.array(observation), reward, done, truncated, info
 
-
     def get_action_space(self):
         return self.action_space
 
-
     def get_observation_space(self):
         return self.observation_space
-
 
     def get_random_action(self):
         return self.action_space.sample()

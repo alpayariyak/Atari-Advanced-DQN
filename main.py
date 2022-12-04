@@ -5,6 +5,9 @@ import time
 
 
 def parse():
+    """
+    Parse command line arguments and return an `argparse.Namespace` object.
+    """
     parser = argparse.ArgumentParser(description="Breakout")
     parser.add_argument('--env_name', default=None, help='environment name')
     parser.add_argument('--train_dqn', action='store_true', help='whether train DQN')
@@ -19,6 +22,9 @@ def parse():
 
 
 def run(args):
+    """
+    Execute the main program that can either train or test an agent.
+    """
     start_time = time.time()
     if args.train_dqn:
         env_name = args.env_name or 'BreakoutNoFrameskip-v4'

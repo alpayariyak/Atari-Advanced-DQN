@@ -1,15 +1,9 @@
-"""
-
-### NOTICE ###
-DO NOT revise this file
-
-"""
 from environment import Environment
+
 
 class Agent(object):
     def __init__(self, env):
         self.env = env
-
 
     def make_action(self, observation, test=True):
         """

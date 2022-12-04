@@ -1,6 +1,5 @@
 """original code:
 https://github.com/ray-project/ray/blob/master/rllib/env/wrappers/atari_wrappers.py
-The code is modified to make it work on gym version 0.25.0 (WPI Fall2022: DS595 Reinforcement Learning)
 """
 import gym
 import numpy as np

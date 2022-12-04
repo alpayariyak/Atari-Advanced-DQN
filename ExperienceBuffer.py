@@ -7,12 +7,13 @@ from operator import itemgetter
 
 class ExperienceBuffer:
     def __init__(self, maxlen, minibatch_size, device):
-        self.max_buffer_capacity = maxlen
-        self.minibatch_size = minibatch_size
-        self.buffer = deque(maxlen=maxlen)
-        self.device = device
+        self.max_buffer_capacity = maxlen  # max number of experiences
+        self.minibatch_size = minibatch_size  # number of experiences to sample
+        self.buffer = deque(maxlen=maxlen)  # buffer to store experiences
+        self.device = device  # device to store experiences
 
     def is_full(self):
+        # Check if buffer is full
         return len(self.buffer) == self.max_buffer_capacity
 
     def push(self, experience_tuple):  # (s, a, r, s', is_terminal)

@@ -19,5 +19,7 @@ def add_arguments(parser):
     parser.add_argument('--clip_grad', type=bool, default=True, help='To clip gradients or not')
     parser.add_argument('--load_checkpoint', type=int, default=False, help='The model to load')
 
+    parser.add_argument('--path_to_trained_model', type=str, default='trained_models/', help='Path to trained model')
+
     parser.add_argument('--test_n', type=int, default=False, help='The experiment n to save')
     return parser

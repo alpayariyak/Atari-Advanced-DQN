@@ -6,27 +6,21 @@ import torch
 
 
 class DQN(nn.Module):
-    """Initialize a deep Q-learning network
+    """
+    Initialize a deep Q-learning network
 
     Original paper for DQN
     https://storage.googleapis.com/deepmind-data/assets/papers/DeepMindNature14236Paper.pdf
 
+    Args:
+        device: The device on which to run the model.
+        initialize_weights: (bool) Whether to initialize the model weights.
+        in_channels: (int) The number of channels in the input image.
+        num_actions: (int) The number of possible actions in the environment.
     """
 
     def __init__(self, device, initialize_weights=False, in_channels=4, num_actions=4):
-        """
-        Parameters:
-        -----------
-        in_channels: number of channel of input.
-                i.e The number of most recent frames stacked together, here we use 4 frames, which means each state in Breakout is composed of 4 frames.
-        num_actions: number of action-value to output, one-to-one correspondence to action in game.
-
-        In the constructor we instantiate modules and assign them as
-        member variables.
-        """
         super(DQN, self).__init__()
-        ###########################
-        # YOUR IMPLEMENTATION HERE #
         self.device = device
         self.conv1 = nn.Conv2d(in_channels, 32, kernel_size=8, stride=4, bias=False)
         self.conv2 = nn.Conv2d(32, 64, kernel_size=4, stride=2, bias=False)
@@ -40,11 +34,6 @@ class DQN(nn.Module):
         self.to(self.device)
 
     def forward(self, x):
-        """
-        In the forward function we accept a Tensor of input data and we must return
-        a Tensor of output data. We can use Modules defined in the constructor as
-        well as arbitrary operators on Tensors.
-        """
         # Using the original Deepmind architecture
         x = x.permute(0, 3, 1, 2).float().to(self.device) / 255.0  # Normalization
         # CNN
