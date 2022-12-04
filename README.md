@@ -1,6 +1,7 @@
 # Breakout Deep Q-Network
 
 This project is an implementation of the deep Q-learning (DQN) algorithm. The DQN algorithm is a model-free reinforcement learning technique that can be used to learn a policy for taking actions in an environment in order to maximize a reward signal.
+
 <img src="https://miro.medium.com/max/640/1*jXpSVhjWRxgzDDKKVAQR8A.gif" width="250" height="300" />
 
 ## Getting Started
